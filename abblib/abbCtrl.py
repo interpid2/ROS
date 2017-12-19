@@ -74,15 +74,13 @@ class abbRobot:
         for joint in jointAngles:
             print "Going to joint values[degrees]: ", [round(i*180/pi,2) for i in joint]
             jointGoal.trajectory.points[0].positions=joint
-            jointGoal.trajectory.points[0].velocities=[0,0,0,0,0,0]
-            jointGoal.trajectory.points[0].accelerations=[0,0,0,0,0,0]
             #jointGoal.trajectory.points[0].velocities=[2.,2.,2.,6.,6.,7.]
             #jointGoal.trajectory.points[0].accelerations=[1.,1.,1.,1.,1.,1.]
             #jointGoal.trajectory.points[0].time_from_start=rp.Duration(2,0)
             self.client.send_goal(jointGoal,feedback_cb=self.__feedback)
             self.client.wait_for_result()
             print "[Result:] ",self.errorDict[self.client.get_result().error_code]
-        spent=self.__displayDuration(t1,t.time())""
+        spent=self.__displayDuration(t1,t.time())
   
     @staticmethod
     def __feedback(msg):
