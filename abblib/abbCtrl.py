@@ -31,14 +31,16 @@ class abbRobot:
         self.client.wait_for_server()
         rp.loginfo("Successfuly connected to server.")
 
-    def move2Point(self, points, eAngles=[[0,0,0]], end_effector='link_6'):
+    def move2Point(self, points, eAngles=[[0,0,0]], ax='sxyz', end_effector='link_6'):
         """
         Moves to a point using end effector point space.\n
         Usage:\n
             - points  - list of lists that contain x,y,z coordinates\n
             - eAngles - default [[0,0,0]]\n
-                      - list of lists that contain a,b,g euler angles in sxyz convention
+                      - list of lists that contain a,b,g euler angles
                       - if multiple points are passed and only one list of euler angles then those angles are going to be used for all points
+            - ax - specify convention to use for euler angles
+                 - default: 'sxyz'
             - end_effector - default link_6
                            - link whose point you want to move
         """
@@ -54,11 +56,14 @@ class abbRobot:
                 index=i
                 if len(eAngles)==1:
                     index=0
-                orient=Quaternion(*qEuler(eAngles[index][0],eAngles[index][1],eAngles[index][2]))
+                orient=Quaternion(*qEuler(eAngles[index][0],eAngles[index][1],eAngles[index][2],ax))
                 self.manip.set_pose_target(Pose(p,orient),end_effector_link=end_effector)
                 self.manip.go(True)
             rp.loginfo("Moving to multiple points finished.")
             self.__displayDuration(t1,t.time())
+        else:
+            print "Number of points recieved does not match number of euler angles received\n"+
+                  "neither number of euler angles is 1. Please check the input parameters."
  
     def jointAction(self, jointAngles):
         """
