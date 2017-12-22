@@ -47,6 +47,7 @@ Function move2Point moves the robot in end effector point space using MoveIt! pa
 Usage:
 ```python
 def move2Point(points, eAngles=[[0,0,0]], ax='sxyz', end_effector='link_6')
+```
 * points  - list of lists that contain x,y,z coordinates
 * eAngles
     * list of lists that contain a,b,g euler angles
@@ -58,4 +59,3 @@ def move2Point(points, eAngles=[[0,0,0]], ax='sxyz', end_effector='link_6')
 * end_effector
     * link whose point you want to move
     * default link_6
-```
