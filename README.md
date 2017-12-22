@@ -25,11 +25,11 @@ Usage:
     def jointsInfo(printoutRate=0.5, anonym=False)  
 ```
 * printoutRate
-    * print rate to terminal in Hz (Refresh time)  
-    * defult: 0.5  
+    * print rate to terminal in Hz (Refresh time)
+    * defult: 0.5
 * anonym
-    * do you want to run the node as anonymous node  
-    * default: False  
+    * do you want to run the node as anonymous node
+    * default: False
 Example:  
 
 ```python
