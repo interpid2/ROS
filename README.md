@@ -5,13 +5,13 @@ Used OS: Ubuntu 16.04 LTS - Xenial Xerus
 Used ROS: Kinetic Kame LTS  
 Used programming language: Python 2.7  
 
-Current features:  
+Current features:
 * initialize info node  
 * control robotic arm using  
     * end point space + trajectory planning  
     * joint space  
 
-Git repo files:  
+Git repo files:
 * abblib - package (folder) for control  
 * example files  
     * abbTestFile.py - example for using info node  
