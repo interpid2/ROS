@@ -12,9 +12,9 @@ from control_msgs.msg import FollowJointTrajectoryActionFeedback as feedback
 from trajectory_msgs.msg import JointTrajectoryPoint
 from sensor_msgs.msg import JointState
 import actionlib as act
-import termios, sys
+import sys, os
 import time as t
-import os
+from tf.listener import TransformListener
 
 class abbRobot:
     errorDict={0:"Successful",
@@ -98,10 +98,15 @@ class abbRobot:
         rp.loginfo("Execution took [min:sec.ms]: %i:%02i.%03i ",spent[0],spent[1],spent[2])
 
 
-def __listenCb(msg):
+def __listenCb(msg,tfListener):
     clear()
+    tfListener.waitForTransform('base_link','link_6',rp.Time(),rp.Duration(0.5))
+    ptData=tfListener.lookupTransform('base_link','link_6',rp.Time())
     print "Joint names          :", msg.name
     print "Joint angles [degree]:", [round(joint*180/pi,2) for joint in msg.position]
+    print "-----------"
+    print "Point coordinates: ", [round(pt,5) for pt in ptData[0]]
+    print "Quaternions:       ", [round(q,5) for q in ptData[1]]
 
 def jointsInfo(printoutRate=0.5, anonym=False):
     """
@@ -113,7 +118,8 @@ def jointsInfo(printoutRate=0.5, anonym=False):
                               - default: False
     """
     rp.init_node("abb_jointListener",anonymous=anonym)
-    listener=rp.Subscriber("/joint_states", JointState,__listenCb)
+    tfListener=TransformListener()
+    listener=rp.Subscriber("/joint_states", JointState,__listenCb,tfListener)
     rate=rp.Rate(printoutRate)
     rate.sleep()
     rp.spin()
