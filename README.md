@@ -39,7 +39,7 @@ abbCtrl.jointsInfo(0.5,True)
 ```
 
 ### Controlling the robot
-Functions for arm control are implemented in abbRobot class. Making an object does not initialize new node so it should be initialized by the user.
+Functions for arm control are implemented in abbRobot class. Object of the class abbRobot does not initialize new node so it should be initialized by the user.
 
 #### Controlling the robot in end point space
 Function move2Point moves the robot in end effector point space using MoveIt! package for trajectory planning. Because this function uses MoveIt! package, if the given point can not be reached it will print out "No solutions found. Execution not attempted."  
@@ -72,4 +72,27 @@ rp.init_node('abbMove_Main')
 robot=abbRobot()
 pts=[[1,0,1],[1,1,1],[1,-1,1]]
 robot.move2Point(pts)
+```
+
+#### Controlling the robot in joint space
+Function jointAction uses an ROS action to move robot in joint space. While moving, function will print out current desired angles in degrees. Care should be taken when using this function because angles could be out of reach. In that case, FlexPendant will throw an error and stop the RAPID program while function will return message "Invalid joints".
+
+Usage:
+```python
+def jointAction(jointAngles)
+```
+* jointAngles
+    * list of lists that contain 6 angles in radians in order from joint_1 to joint_6
+
+Example - move to joint values (0,0,0,0,0,0) then to (-pi,0,0,0,0,0) then to (0,pi,-pi,0,0,0) 
+
+```python
+from abblib.abbCtrl import abbRobot
+import rospy as rp
+from math import pi
+
+rp.init_node('abbMove_Main')
+robot=abbRobot()
+angles=[[0,0,0,0,0,0],[-pi,0,0,0,0,0],[0,pi,-pi,0,0,0]]
+robot.jointAction(angles)
 ```
