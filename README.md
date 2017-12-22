@@ -29,7 +29,8 @@ Usage:
     * defult: 0.5
 * anonym
     * do you want to run the node as anonymous node
-    * default: False
+    * default: False  
+
 Example:  
 
 ```python
