@@ -62,8 +62,7 @@ class abbRobot:
             rp.loginfo("Moving to multiple points finished.")
             self.__displayDuration(t1,t.time())
         else:
-            print "Number of points recieved does not match number of euler angles received\n"+
-                  "neither number of euler angles is 1. Please check the input parameters."
+            print "Number of points recieved does not match number of euler angles received\nneither number of euler angles is 1. Please check the input parameters."
  
     def jointAction(self, jointAngles):
         """
