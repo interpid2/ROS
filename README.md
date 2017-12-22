@@ -18,7 +18,7 @@ Git repo files:
     * abbCmd.py - example for control  
 
 ### Using info node  
-Function jointsInfo creates new node named _**abb_jointListener**_ and subscribes to the "/joint_states" topic get the current joint angles. Angles displayed are in degrees. Node can be runned as a normal node or as anonymous node. If it's run as anonymous node then ROS will append a unique id at the end of the node name.
+Function jointsInfo creates new node named _**abb_jointListener**_ and subscribes to the _**/joint_states**_ topic get the current joint angles. Angles displayed are in degrees. Node can be runned as a normal node or as anonymous node. If it's run as anonymous node then ROS will append a unique id at the end of the node name.
 
 Usage:  
 ```python
