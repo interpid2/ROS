@@ -1,28 +1,37 @@
-Controlling ABB IRB 2400L industrial robotic arm using ROS (Robotics Operating System)\n
-Faculty of electrical engeneering, computer science and information technology Osijek, Croatia\n
+# Controlling ABB IRB 2400L industrial robotic arm using ROS (Robotics Operating System)  
+## Faculty of electrical engeneering, computer science and information technology Osijek, Croatia  
 
-Used OS: Ubuntu 16.04 LTS - Xenial Xerus\n
-Used ROS: Kinetic Kame LTS\n
-Used programming language: Python 2.7\n
+Used OS: Ubuntu 16.04 LTS - Xenial Xerus  
+Used ROS: Kinetic Kame LTS  
+Used programming language: Python 2.7  
 
-Current features:\n
-    - initialize info node\n
-    - control robotic arm using\n
-        - end point space + trajectory planning\n
-        - joint space\n
+Current features:  
+* initialize info node  
+* control robotic arm using  
+    * end point space + trajectory planning  
+    * joint space  
 
-Git repo files:\n
-    - abblib - package (folder) for control\n
-    - example files\n
-        - abbTestFile.py - example for using info node\n
-        - abbCmd.py - example for control\n
+Git repo files:  
+* abblib - package (folder) for control  
+* example files  
+    * abbTestFile.py - example for using info node  
+    * abbCmd.py - example for control  
 
-Using info node\n
+### Using info node  
 Function jointsInfo creates new node named "abb_jointListener" and subscribes to the "/joint_states" topic get the current joint angles. Angles displayed are in degrees. Node can be runned as a normal node or as anonymous node. If its run as anonymous node then ROS will append a unique id at the end of the node name.
 
-Usage:\n
-    def jointsInfo(printoutRate=0.5, anonym=False)\n
-    - printoutRate - print rate to terminal in Hz (Refresh time)\n
-                   - defult: 0.5\n
-    - anonym - do you want to run the node as anonymous node\n
-             - default: False\n
+Usage:  
+```python
+    def jointsInfo(printoutRate=0.5, anonym=False)  
+```
+* printoutRate
+    * print rate to terminal in Hz (Refresh time)  
+    * defult: 0.5  
+* anonym
+    * do you want to run the node as anonymous node  
+    * default: False  
+Example:  
+```python
+from abblib import abbCtrl
+abbCtrl.jointsInfo(0.5,True)
+```
