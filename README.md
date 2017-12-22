@@ -18,7 +18,7 @@ Git repo files:
     * abbCmd.py - example for control  
 
 ### Using info node  
-Function jointsInfo creates new node named "abb_jointListener" and subscribes to the "/joint_states" topic get the current joint angles. Angles displayed are in degrees. Node can be runned as a normal node or as anonymous node. If its run as anonymous node then ROS will append a unique id at the end of the node name.
+Function jointsInfo creates new node named _**abb_jointListener**_ and subscribes to the "/joint_states" topic get the current joint angles. Angles displayed are in degrees. Node can be runned as a normal node or as anonymous node. If it's run as anonymous node then ROS will append a unique id at the end of the node name.
 
 Usage:  
 ```python
@@ -26,7 +26,7 @@ Usage:
 ```
 * printoutRate
     * print rate to terminal in Hz (Refresh time)
-    * defult: 0.5
+    * default: 0.5
 * anonym
     * do you want to run the node as anonymous node
     * default: False  
@@ -37,3 +37,5 @@ Example:
 from abblib import abbCtrl
 abbCtrl.jointsInfo(0.5,True)
 ```
+
+### Controlling the robot
