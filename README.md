@@ -101,7 +101,7 @@ def cartesian2Point(self, points, eAngles, ax='sxyz',resolution=0.01, jumpStep=0
     * default: link_6  
 
 Aditional notes:  
-Parameter jumpStep describes highest possible movement in joint space. If joint value changes for a higher value than jumpStep then trajectory generated is truncated to a point just before the jump.
+Parameter jumpStep describes highest possible movement in joint space. If joint value changes for a higher value than jumpStep then trajectory generated is truncated to a point just before the jump. If jumpStep is equal to 0 then jump detection is disabled.
 
 
 Example - move end effector point to (1,0,1) then (1,1,1) then (1,-1,1) with euler angles (0,0,0). Move the end effector with default convention, resolution and jumpStep.
