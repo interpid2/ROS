@@ -1,20 +1,25 @@
 #!/usr/bin/env python
 
-from math import pi
-import rospy as rp
-import numpy as np
-import moveit_commander as mic
-from geometry_msgs.msg import Pose, Point, Quaternion
-from tf.transformations import quaternion_from_euler as qEuler
-from control_msgs.msg import FollowJointTrajectoryAction as trajAction
-from control_msgs.msg import FollowJointTrajectoryGoal as goal
-from control_msgs.msg import FollowJointTrajectoryActionFeedback as feedback
-from trajectory_msgs.msg import JointTrajectoryPoint
-from sensor_msgs.msg import JointState
-import actionlib as act
-import sys, os
+import os
+import sys
 import time as t
+from math import pi
+
+import actionlib as act
+import moveit_commander as mic
+import numpy as np
+import rospy as rp
+from control_msgs.msg import FollowJointTrajectoryAction as trajAction
+from control_msgs.msg import FollowJointTrajectoryActionFeedback as feedback
+from control_msgs.msg import FollowJointTrajectoryGoal as goal
+from geometry_msgs.msg import Point, Pose, Quaternion
+from moveit_msgs.msg import Constraints, OrientationConstraint
+from sensor_msgs.msg import JointState
 from tf.listener import TransformListener
+from tf.transformations import euler_from_quaternion as Eulerq
+from tf.transformations import quaternion_from_euler as qEuler
+from trajectory_msgs.msg import JointTrajectoryPoint
+
 
 class abbRobot:
     errorDict={0:"Successful",
@@ -64,6 +69,46 @@ class abbRobot:
         else:
             print "Number of points recieved does not match number of euler angles received\nneither number of euler angles is 1. Please check the input parameters."
  
+    def cartesian2Point(self, points, eAngles, ax='sxyz',resolution=0.01, jumpStep=0,end_effector='link_6'):
+        """
+        Moves to a point in a straight line using end effector point space.\n
+        Usage:\n
+            - points  - list of lists that contain x,y,z coordinates\n
+            - eAngles - list that contains a,b,g euler angles for constraint
+            - ax - specify convention to use for euler angles
+                 - default: 'sxyz'
+            - resolution - maximum distance between 2 generated points
+                         - default: 0.01
+            - jumpStep - maximum jump distance between 2 generated points
+                       - default: 0
+            - end_effector - link whose point you want to move
+                           - default link_6                           
+        """
+        print "Number of points recieved: ",len(points)
+        wpose=Pose()
+        self.manip.set_end_effector_link(end_effector)
+        constraint=Constraints()
+        orientation_constraint=OrientationConstraint()
+        orientation_constraint.link_name=end_effector
+        orientation_constraint.orientation=Quaternion(*qEuler(eAngles[0],eAngles[1],eAngles[2],ax))
+        constraint.orientation_constraints.append(orientation_constraint)
+        self.manip.set_path_constraints(constraint)
+        t1=t.time()
+        for pt in points:
+            print "Going to point: ", [round(p,5) for p in pt]
+            wpose.position.x=pt[0]
+            wpose.position.y=pt[1]
+            wpose.position.z=pt[2]
+            (plan,factor) =self.manip.compute_cartesian_path([wpose],resolution,jumpStep)
+            trajLen=len(plan.joint_trajectory.points)
+            if trajLen<100 and factor==1.0:
+                self.manip.execute(plan)
+            else:
+                rp.loginfo("Error while planning. No execution attempted.\nNo. points planned:{}\nPercentage of path found:{}%".format(trajLen,round(factor*100,2)))
+        rp.loginfo("Moving to multiple points finished.")
+        self.__displayDuration(t1,t.time())
+        self.manip.set_path_constraints(None)
+
     def jointAction(self, jointAngles):
         """
         Moves to a point using joint space\n
@@ -100,8 +145,8 @@ class abbRobot:
 
 def __listenCb(msg,tfListener):
     clear()
-    tfListener.waitForTransform('base_link','link_6',rp.Time(),rp.Duration(0.5))
-    ptData=tfListener.lookupTransform('base_link','link_6',rp.Time())
+    tfListener.waitForTransform('link_1','link_6',rp.Time(),rp.Duration(0.5))
+    ptData=tfListener.lookupTransform('link_1','link_6',rp.Time())
     print "Joint names          :", msg.name
     print "Joint angles [degree]:", [round(joint*180/pi,2) for joint in msg.position]
     print "-----------"

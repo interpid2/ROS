@@ -42,6 +42,7 @@ abbCtrl.jointsInfo(0.5,True)
 Functions for arm control are implemented in abbRobot class. Object of the class abbRobot does not initialize new node so it should be initialized by the user.
 
 #### Controlling the robot in end point space
+##### Controlling with no constraints
 Function move2Point moves the robot in end effector point space using MoveIt! package for trajectory planning. Because this function uses MoveIt! package, if the given point can not be reached it will print out "No solutions found. Execution not attempted."  
 
 Usage:
@@ -60,6 +61,7 @@ def move2Point(points, eAngles=[[0,0,0]], ax='sxyz', end_effector='link_6')
     * link whose point you want to move
     * default: link_6
 
+Aditional notes:  
 Convention for the parameter ax is specified with a 4 letter string. First letter describes what frame of reference should be. It can be 's'tatic or 'r'otating frame. Remaining characters define order of axis rotation.  
 
 Example - move end effector point to (1,0,1) then (1,1,1) then (1,-1,1) with euler angles (0,0,0). Because euler angles are all 0 for all points then eAngles parameter does not have to be passed in.
@@ -74,8 +76,48 @@ pts=[[1,0,1],[1,1,1],[1,-1,1]]
 robot.move2Point(pts)
 ```
 
+##### Controlling the robot with end effector constrainted
+Function cartesian2Point moves the robot in end effector point space in a straight line using MoveIt! package for trajectory planning. Euler angles specify the direction of end effector in which it will be constrained. Trajectory planning can fail because of 2 reasons: generated path contains too much points (>100) or path found is incomplete. If generated path has too much points, consider increasing the resolution parameter. If path found is incomplete then end point is most probably out of range for the constraint.
+
+Usage:  
+```python
+def cartesian2Point(self, points, eAngles, ax='sxyz',resolution=0.01, jumpStep=0,end_effector='link_6'):
+```
+* points
+    * list of lists that contain x,y,z coordinates
+* eAngles
+    * list that contains a,b,g euler angles for constraint
+* ax
+    * specify convention to use for euler angles
+    * default: 'sxyz'
+* resolution
+    * maximum distance between 2 generated points
+    * default: 0.01
+* jumpStep
+    * maximum jump distance between 2 generated points in joint space
+    * default: 0
+* end_effector
+    * link whose point you want to move
+    * default: link_6  
+
+Aditional notes:  
+Parameter jumpStep describes highest possible movement in joint space. If joint value changes for a higher value than jumpStep then trajectory generated is truncated to a point just before the jump.
+
+
+Example - move end effector point to (1,0,1) then (1,1,1) then (1,-1,1) with euler angles (0,0,0). Move the end effector with default convention, resolution and jumpStep.
+
+```python
+from abblib.abbCtrl import abbRobot
+import rospy as rp
+
+rp.init_node('abbMove_Main')
+robot=abbRobot()
+pts=[[1,0,1],[1,1,1],[1,-1,1]]
+robot.cartesian2Point(pts,[0,0,0])
+```
+
 #### Controlling the robot in joint space
-Function jointAction uses an ROS action to move robot in joint space. While moving, function will print out current desired angles in degrees. Care should be taken when using this function because angles could be out of reach. In that case, FlexPendant will throw an error and stop the RAPID program while function will return message "Invalid joints".
+Function jointAction uses an ROS action to move robot in joint space. While moving, function will print out current desired angles in degrees. Care should be taken when using this function because angles could be out of reach. In that case, FlexPendant will throw an error and stop the RAPID program when joints are close to singularity  while function will return message "Invalid joints".
 
 Usage:
 ```python
