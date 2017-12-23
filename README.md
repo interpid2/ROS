@@ -8,7 +8,8 @@ Used programming language: Python 2.7
 Current features:
 * initialize info node  
 * control robotic arm using  
-    * end point space + trajectory planning  
+    * end point space + trajectory planning
+    * end point space + constrainted trajectory planning
     * joint space  
 
 Git repo files:
@@ -18,7 +19,7 @@ Git repo files:
     * abbCmd.py - example for control  
 
 ### 1. Using info node  
-Function jointsInfo creates new node named _**abb_jointListener**_ and subscribes to the _**/joint_states**_ topic to get the current joint angles. Angles displayed are in degrees. Node can be runned as a normal node or as anonymous node. If it's run as anonymous node then ROS will append a unique id at the end of the node name.
+Function jointsInfo creates new node named __*abb_jointListener*__ and subscribes to the __*/joint_states*__ topic to get the current joint angles. Angles displayed are in degrees. Node can be runned as a normal node or as anonymous node. If it's run as anonymous node then ROS will append a unique id at the end of the node name.
 
 Usage:  
 ```python
@@ -43,7 +44,7 @@ Functions for arm control are implemented in abbRobot class. Object of the class
 
 #### 2.1 Controlling the robot in end point space
 ##### 2.1.1 Controlling with no constraints
-Function move2Point moves the robot in end effector point space using MoveIt! package for trajectory planning. Because this function uses MoveIt! package, if the given point can not be reached it will print out "No solutions found. Execution not attempted."  
+Function __*move2Point*__ moves the robot in end effector point space using MoveIt! package for trajectory planning. Because this function uses MoveIt! package, if the given point can not be reached it will print out "No solutions found. Execution not attempted."  
 
 Usage:
 ```python
@@ -77,7 +78,7 @@ robot.move2Point(pts)
 ```
 
 ##### 2.1.2 Controlling the robot with end effector constrainted
-Function cartesian2Point moves the robot in end effector point space in a straight line using MoveIt! package for trajectory planning. Euler angles specify the direction of end effector in which it will be constrained. Trajectory planning can fail because of 2 reasons: generated path contains too much points (>100) or path found is incomplete. If generated path has too much points, consider increasing the resolution parameter. If path found is incomplete then end point is most probably out of range for the constraint.
+Function _**cartesian2Point**_ moves the robot in end effector point space in a straight line using MoveIt! package for trajectory planning. Euler angles specify the direction of end effector in which it will be constrained. Trajectory planning can fail because of 2 reasons: generated path contains too much points (>100) or path found is incomplete. If generated path has too much points, consider increasing the resolution parameter. If path found is incomplete then end point is most probably out of range for the constraint.
 
 Usage:  
 ```python
@@ -101,7 +102,7 @@ def cartesian2Point(self, points, eAngles, ax='sxyz',resolution=0.01, jumpStep=0
     * default: link_6  
 
 Aditional notes:  
-Parameter jumpStep describes highest possible movement in joint space. If joint value changes for a higher value than jumpStep then trajectory generated is truncated to a point just before the jump. If jumpStep is equal to 0 then jump detection is disabled.
+Parameter _jumpStep_ describes highest possible movement in joint space. If joint value changes for a higher value than _jumpStep_ then trajectory generated is truncated to a point just before the jump. If _jumpStep_ is equal to 0 then jump detection is disabled.
 
 
 Example - move end effector point to (1,0,1) then (1,1,1) then (1,-1,1) with euler angles (0,0,0). Move the end effector with default convention, resolution and jumpStep.
@@ -117,7 +118,7 @@ robot.cartesian2Point(pts,[0,0,0])
 ```
 
 #### 2.2 Controlling the robot in joint space
-Function jointAction uses an ROS action to move robot in joint space. While moving, function will print out current desired angles in degrees. Care should be taken when using this function because angles could be out of reach. In that case, FlexPendant will throw an error and stop the RAPID program when joints are close to singularity  while function will return message "Invalid joints".
+Function __*jointAction*__ uses an ROS action to move robot in joint space. While moving, function will print out current desired angles in degrees. Care should be taken when using this function because angles could be out of reach. In that case, FlexPendant will throw an error and stop the RAPID program when joints are close to singularity  while function will return message "_Invalid joints_".
 
 Usage:
 ```python
