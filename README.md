@@ -2,7 +2,6 @@
 
 #### Faculty of electrical engeneering, computer science and information technology Osijek, Croatia 
 # Controlling ABB IRB 2400L industrial robotic arm using ROS (Robotics Operating System)  
----
 
 Used OS: Ubuntu 16.04 LTS - Xenial Xerus  
 Used ROS: Kinetic Kame LTS  
