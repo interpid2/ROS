@@ -19,7 +19,7 @@ Git repo files:
 * example files  
     * abbTestFile.py - example for using info node  
     * abbCmd.py - example for control  
-
+---
 ### 1. Using info node  
 Function jointsInfo creates new node named __*abb_jointListener*__ and subscribes to the __*/joint_states*__ topic to get the current joint angles. Angles displayed are in degrees. Node can be runned as a normal node or as anonymous node. If it's run as anonymous node then ROS will append a unique id at the end of the node name.
 
@@ -40,7 +40,7 @@ Example:
 from abblib import abbCtrl
 abbCtrl.jointsInfo(0.5,True)
 ```
-
+---
 ### 2. Controlling the robot
 Functions for arm control are implemented in abbRobot class. Object of the class abbRobot does not initialize new node so it should be initialized by the user.
 
