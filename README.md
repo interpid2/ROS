@@ -1,6 +1,5 @@
 <img align="left" src="https://scontent-vie1-1.xx.fbcdn.net/v/t1.0-9/14440943_1059991924119855_2847408427133631888_n.png?oh=9d5052834fdd9d0078d71e8a37ddbacf&oe=5AB4D5B8" alt="Faculty of electrical engeneering, computer science and information technology" title="FERIT" hspace="20"/>
-<img align="right" src="http://danieli-systec.com//static/site/images/logo_2x.png" alt="Danieli Systec d.o.o" title="Danieli Systec" hspace="20"/>
-</br></br>
+
 
 #### Faculty of electrical engeneering, computer science and information technology Osijek, Croatia 
 # Controlling ABB IRB 2400L industrial robotic arm using ROS (Robotics Operating System)  
