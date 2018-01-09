@@ -1,12 +1,11 @@
-<img align="left" src="https://scontent-vie1-1.xx.fbcdn.net/v/t1.0-9/14440943_1059991924119855_2847408427133631888_n.png?oh=9d5052834fdd9d0078d71e8a37ddbacf&oe=5AB4D5B8" alt="Faculty of electrical engeneering, computer science and information technology" title="FERIT" hspace="20"/></br>
-
+![FERIT](https://www.ferit.unios.hr/new-images/ferit-web-f-200.png)
 
 #### Faculty of electrical engeneering, computer science and information technology Osijek, Croatia 
 # Controlling ABB IRB 2400L industrial robotic arm using ROS (Robotics Operating System)  
 ---
+
 Used OS: Ubuntu 16.04 LTS - Xenial Xerus  
 Used ROS: Kinetic Kame LTS  
-Used robotic arm: ABB IRB 2400L
 Used programming language: Python 2.7  
 
 Current features:
