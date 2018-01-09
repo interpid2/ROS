@@ -95,16 +95,17 @@ class abbRobot:
         self.manip.set_path_constraints(constraint)
         t1=t.time()
         for pt in points:
-            print "Going to point: ", [round(p,5) for p in pt]
-            wpose.position.x=pt[0]
-            wpose.position.y=pt[1]
-            wpose.position.z=pt[2]
-            (plan,factor) =self.manip.compute_cartesian_path([wpose],resolution,jumpStep)
-            trajLen=len(plan.joint_trajectory.points)
-            if trajLen<100 and factor==1.0:
-                self.manip.execute(plan)
-            else:
-                rp.loginfo("Error while planning. No execution attempted.\nNo. points planned:{}\nPercentage of path found:{}%".format(trajLen,round(factor*100,2)))
+            if not rp.is_shutdown():
+                print "Going to point: ", [round(p,5) for p in pt]
+                wpose.position.x=pt[0]
+                wpose.position.y=pt[1]
+                wpose.position.z=pt[2]
+                (plan,factor) =self.manip.compute_cartesian_path([wpose],resolution,jumpStep)
+                trajLen=len(plan.joint_trajectory.points)
+                if trajLen<=100 and factor==1.0:
+                    self.manip.execute(plan)
+                else:
+                    rp.loginfo("Error while planning. No execution attempted.\nNo. points planned:{}\nPercentage of path found:{}%".format(trajLen,round(factor*100,2)))
         rp.loginfo("Moving to multiple points finished.")
         self.__displayDuration(t1,t.time())
         self.manip.set_path_constraints(None)
@@ -145,13 +146,13 @@ class abbRobot:
 
 def __listenCb(msg,tfListener):
     clear()
-    tfListener.waitForTransform('link_1','link_6',rp.Time(),rp.Duration(0.5))
-    ptData=tfListener.lookupTransform('link_1','link_6',rp.Time())
+    tfListener.waitForTransform('base_link','tool0',rp.Time(),rp.Duration(0.5))
+    ptData=tfListener.lookupTransform('base_link','tool0',rp.Time())
     print "Joint names          :", msg.name
     print "Joint angles [degree]:", [round(joint*180/pi,2) for joint in msg.position]
     print "-----------"
-    print "Point coordinates: ", [round(pt,5) for pt in ptData[0]]
-    print "Quaternions:       ", [round(q,5) for q in ptData[1]]
+    print "Point coordinates   :", [round(pt,5) for pt in ptData[0]]
+    print "Quaternions[x,y,z,r]:", [round(q,5) for q in ptData[1]]
 
 def jointsInfo(printoutRate=0.5, anonym=False):
     """
