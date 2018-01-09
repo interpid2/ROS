@@ -1,3 +1,5 @@
+![FERIT](https://www.ferit.unios.hr/new-images/ferit-web-f-200.png)
+
 #### Faculty of electrical engeneering, computer science and information technology Osijek, Croatia 
 # Controlling ABB IRB 2400L industrial robotic arm using ROS (Robotics Operating System)  
 
