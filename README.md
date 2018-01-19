@@ -46,7 +46,7 @@ abbCtrl.jointsInfo(0.5,True)
 ### 2. Controlling the robot
 Functions for arm control are implemented in abbRobot class. Object of the class abbRobot does not initialize new node so it should be initialized by the user.
 
-#### 2.2 Getting the end effector point and orientation
+#### 2.1 Getting the end effector point and orientation
 Function __*getEEPoint*__ returns a tuple in which first member is a list of cartesian
 coordinates and the second member is the list of quaternions in x,y,z,w convention.
 
