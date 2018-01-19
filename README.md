@@ -46,8 +46,31 @@ abbCtrl.jointsInfo(0.5,True)
 ### 2. Controlling the robot
 Functions for arm control are implemented in abbRobot class. Object of the class abbRobot does not initialize new node so it should be initialized by the user.
 
-#### 2.1 Controlling the robot in end point space
-##### 2.1.1 Controlling with no constraints
+#### 2.2 Getting the end effector point and orientation
+Function __*getEEPoint*__ returns a tuple in which first member is a list of cartesian
+coordinates and the second member is the list of quaternions in x,y,z,w convention.
+
+Usage:
+```python
+def getEEPoint(self, start_link='base_link',end_link="tool0")
+```
+* start_link
+    * default: base_link
+* end_link
+    * default: tool0
+
+Example:
+```python
+from abblib.abbCtrl import abbRobot
+import rospy as rp
+
+rp.init_node('abbMove_Main')
+robot=abbRobot()
+print robot.getEEPoint()
+```
+
+#### 2.2 Controlling the robot in end point space
+##### 2.2.1 Controlling with no constraints
 Function __*move2Point*__ moves the robot in end effector point space using MoveIt! package for trajectory planning. Because this function uses MoveIt! package, if the given point can not be reached it will print out "No solutions found. Execution not attempted."  
 
 Usage:
@@ -81,7 +104,7 @@ pts=[[1,0,1],[1,1,1],[1,-1,1]]
 robot.move2Point(pts)
 ```
 
-##### 2.1.2 Controlling the robot with end effector constrainted
+##### 2.2.2 Controlling the robot with end effector constrainted
 Function _**cartesian2Point**_ moves the robot in end effector point space in a straight line using MoveIt! package for trajectory planning. Euler angles specify the direction of end effector in which it will be constrained. Trajectory planning can fail because of 2 reasons: generated path contains too much points (>100) or path found is incomplete. If generated path has too much points, consider increasing the resolution parameter. If path found is incomplete then end point is most probably out of range for the constraint.
 
 Usage:  
@@ -121,7 +144,7 @@ pts=[[1,0,1],[1,1,1],[1,-1,1]]
 robot.cartesian2Point(pts,[0,0,0])
 ```
 
-#### 2.2 Controlling the robot in joint space
+#### 2.3 Controlling the robot in joint space
 Function __*jointAction*__ uses an ROS action to move robot in joint space. While moving, function will print out current desired angles in degrees. Care should be taken when using this function because angles could be out of reach. In that case, FlexPendant will throw an error and stop the RAPID program when joints are close to singularity  while function will return message "_Invalid joints_".
 
 Usage:
