@@ -9,6 +9,7 @@ Used programming language: Python 2.7
 
 Current features:
 * initialize info node  
+* get current end effector point and orientation
 * control robotic arm using  
     * end point space + trajectory planning
     * end point space + constrainted trajectory planning
@@ -61,7 +62,7 @@ def getEEPoint(self, start_link='base_link',end_link="tool0")
 
 Example:
 ```python
-from abblib.abbCtrl import abbRobot
+from abblib import abbCtrl
 import rospy as rp
 
 rp.init_node('abbMove_Main')
